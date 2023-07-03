@@ -1,0 +1,158 @@
+package in.cdac.domain;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.*;
+
+public class UserInterface {
+	private  Nursery nursery;
+	private  Sales sales;
+	private static Scanner scanner = new Scanner(System.in) ;
+
+	public UserInterface() {
+		this.nursery = new Nursery();
+		this.sales = new Sales();
+	}
+
+	public static void main(String[] args) {
+		UserInterface userInterface= new UserInterface();
+		while (true) {
+			displayMenu();
+			int choice = scanner.nextInt();
+			switch (choice) {
+			case 1:
+				userInterface.addTree();
+				break;
+			case 2:
+				userInterface.removeTree();
+				break;
+			case 3:
+				userInterface.findTreeBySpecies();
+				break;
+			case 4:
+				userInterface.findTreesByAge();
+				break;
+			case 5:
+				userInterface.addSale();
+				break;
+			case 6:
+				userInterface.displayTotalRevenue();
+				break;
+			case 7:
+				userInterface.displaySalesBySpecies();
+				break;
+			case 8:
+				System.exit(0);
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		}
+	}
+
+	private static void displayMenu() {
+		System.out.println("Nursery Management System");
+		System.out.println("1. Add tree");
+		System.out.println("2. Remove tree");
+		System.out.println("3. Find tree by species");
+		System.out.println("4. Find trees by age");
+		System.out.println("5. Add sale");
+		System.out.println("6. Display total revenue");
+		System.out.println("7. Display sales by species");
+		System.out.println("8. Exit");
+		System.out.print("Enter your choice: ");
+	}
+
+	private void addTree() {
+	Tree tree = new Tree();
+		System.out.print("Enter species: ");
+		scanner.nextLine();
+		String species = scanner.nextLine();
+		
+		System.out.print("Enter age: ");
+		int age = scanner.nextInt();
+//scanner.nextLine();
+		System.out.print("Enter height: ");
+		double height = scanner.nextDouble();
+		//scanner.nextLine();
+		System.out.print("Enter price: ");
+		double price = scanner.nextDouble();
+          // tree.setPrice(scanner.nextDouble());
+        scanner.nextLine();
+	Tree tree = new Tree(species, age, height, price);
+		System.out.println(tree);
+		this.nursery.addTree(tree);
+		System.out.println("Tree added.");
+	}
+
+	private  void removeTree() {
+		System.out.print("Enter species: ");
+		String species = scanner.nextLine();
+		Tree tree = nursery.findTreeBySpecies(species);
+		if (tree == null) {
+			System.out.println("Tree not found.");
+		} else {
+			nursery.removeTree(tree);
+			System.out.println("Tree removed.");
+		}
+	}
+
+	private  void findTreeBySpecies() {
+		scanner.nextLine();
+		System.out.print("Enter species: ");
+		String species = scanner.nextLine();
+		Tree tree = nursery.findTreeBySpecies(species);
+		if (tree == null) {
+			System.out.println("Tree not found.");
+		} else {
+			System.out
+					.println(tree.getSpecies() + " " + tree.getAge() + " " + tree.getHeight() + " " + tree.getPrice());
+		}
+	}
+
+	private  void findTreesByAge() {
+		System.out.print("Enter age: ");
+		int age = scanner.nextInt();
+		scanner.nextLine();
+		List<Tree> matchingTrees = nursery.findTreesByAge(age);
+		if (matchingTrees.isEmpty()) {
+			System.out.println("No trees found.");
+		} else {
+			for (Tree tree : matchingTrees) {
+				System.out.println(
+						tree.getSpecies() + " " + tree.getAge() + " " + tree.getHeight() + " " + tree.getPrice());
+			}
+		}
+	}
+
+	private  void addSale() {
+		System.out.print("Enter species: ");
+		String species = scanner.nextLine();
+		Tree tree = nursery.findTreeBySpecies(species);
+		if (tree == null) {
+			System.out.println("Tree not found.");
+		} else {
+			sales.addSale(tree);
+			System.out.println("Sale recorded.");
+		}
+	}
+
+	private  void displayTotalRevenue() {
+		double totalRevenue = sales.getTotalRevenue();
+		System.out.println("Total revenue: " + totalRevenue);
+	}
+
+	private  void displaySalesBySpecies() {
+		Map<String, Integer> salesBySpecies = sales.getSalesBySpecies();
+		if (salesBySpecies.isEmpty()) {
+			System.out.println("No sales recorded.");
+		} else {
+			for (String species : salesBySpecies.keySet()) {
+				int count = salesBySpecies
+
+						.get(species);
+				System.out.println(species + " " + count);
+			}
+		}
+	}
+}

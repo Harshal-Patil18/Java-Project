@@ -1,0 +1,22 @@
+package harshal.fardin.main;
+
+import java.util.Arrays;
+
+public class MissingNumber {
+	public static int find(int[] arr) {
+		int n = arr.length + 1;
+		int sum = n*(n + 1) / 2;
+		for (int i = 0; i < arr.length - 1; i++) {
+			sum=sum-arr[i];
+
+		}
+		return sum;
+	}
+	public static void main(String[] args) {
+		int[]fardin= {1,3,4,6,5};
+		Arrays.sort(fardin);
+		System.out.println(Arrays.toString(fardin));
+		System.out.println(find(fardin));
+	}
+
+}
